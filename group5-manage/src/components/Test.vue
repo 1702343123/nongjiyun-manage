@@ -33,6 +33,7 @@
           size="mini"
           type="danger"
           @click="delSort(scope.row.id)">删除</el-button>
+					  
       </template>
     </el-table-column>
   </el-table>
@@ -88,7 +89,8 @@
 						alert('数据加载失败！');
 					}
 				})
-			}
+			},
+			
 		
     }
   }

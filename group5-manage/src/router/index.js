@@ -33,6 +33,16 @@ export default new Router({
 		  path: '/test',
 		  name: 'Test',
 		  	component: resolve => require(['../components/Test.vue'], resolve)
+		},
+		{
+		  path: '/c',
+		  name: 'checkbox',
+		  	component: resolve => require(['../components/checkbox.vue'], resolve)
+		},
+		{
+		  path: '/d',
+		  name: 'delete',
+		  	component: resolve => require(['../components/Home.vue'], resolve)
 		}
   ]
 })
