@@ -6,43 +6,47 @@ Vue.use(Router)
 
 
 export default new Router({
-	mode:"history",
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-				// component: resolve => require(['../components/Signin.vue'], resolve)
-      	component: resolve => require(['../components/HelloWorld.vue'], resolve)
-    },
-		  {
-		  path: '/sign',
-		  name: 'Signin',
-		  	component: resolve => require(['../components/Signin.vue'], resolve)
+	mode: "history",
+	routes: [{
+			path: '/',
+			name: 'HelloWorldF',
+			// component: resolve => require(['../components/Signin.vue'], resolve)
+			component: resolve => require(['../components/HelloWorld.vue'], resolve)
 		},
 		{
-		  path: '/home',
-		  name: 'Home',
-		  	component: resolve => require(['../components/Home.vue'], resolve)
+			path: '/sign',
+			name: 'Signin',
+			component: resolve => require(['../components/Signin.vue'], resolve)
 		},
 		{
-		  path: '/user',
-		  name: 'User',
-		  	component: resolve => require(['../components/User.vue'], resolve)
+			path: '/home',
+			name: 'Home',
+			component: resolve => require(['../components/HomeTest.vue'], resolve)
 		},
 		{
-		  path: '/test',
-		  name: 'Test',
-		  	component: resolve => require(['../components/Test.vue'], resolve)
+			path: '/ut',
+			name: 'User',
+			component: resolve => require(['../components/UserTest.vue'], resolve)
 		},
 		{
-		  path: '/c',
-		  name: 'checkbox',
-		  	component: resolve => require(['../components/checkbox.vue'], resolve)
+			path: '/test',
+			name: 'Test',
+			component: resolve => require(['../components/Test.vue'], resolve)
 		},
 		{
-		  path: '/d',
-		  name: 'delete',
-		  	component: resolve => require(['../components/Home.vue'], resolve)
+			path: '/techSort',
+			name: 'TechSort',
+			component: resolve => require(['../components/TechSort.vue'], resolve)
+		},
+		{
+			path: '/n',
+			name: 'NavMenu',
+			component: resolve => require(['../components/NavMenuTest.vue'], resolve)
+		},
+		{
+			path: '/user',
+			name: 'User',
+			component: resolve => require(['../components/User.vue'], resolve)
 		}
-  ]
+	]
 })
