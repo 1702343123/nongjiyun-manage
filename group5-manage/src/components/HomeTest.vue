@@ -71,6 +71,7 @@
         :total="totalCount"
       ></el-pagination>
     </div>
+		
   </div>
 </template>
 <script>

@@ -47,6 +47,12 @@ export default new Router({
 			path: '/user',
 			name: 'User',
 			component: resolve => require(['../components/User.vue'], resolve)
+		},
+		{
+			path: '/bug',
+			name: 'bug',
+			component: resolve => require(['../components/BugTest.vue'], resolve)
 		}
+		
 	]
 })
