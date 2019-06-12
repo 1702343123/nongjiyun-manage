@@ -14,12 +14,14 @@
 		内容
 		<el-input v-model="content" autocomplete="off"></el-input>
 		<el-upload class="upload-demo" action="http://localhost:8888/api/img/insetImg" :on-preview="handlePreview" :on-remove="handleRemove"
-		 :before-remove="beforeRemove" :on-success="handleSuccess" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
+		 :before-remove="beforeRemove" :on-success="handleSuccess" multiple :limit="9" :on-exceed="handleExceed" :file-list="fileList">
 			<el-button size="small" type="primary">点击上传</el-button>
 			<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 		</el-upload>
 		<el-button size="small" type="primary" @click="test()">遍历</el-button>
 		<el-button size="small" type="primary" @click="commit()">发布交流</el-button>
+		<el-button size="small" type="danger" @click="test2()">测试</el-button>
+		<el-button size="small" type="warning" @click="addTest()">请求测试</el-button>
 		<!--  <el-upload
                ref="upload"
                action="http://localhost:8888/api/img/insetImg"
@@ -56,7 +58,8 @@
 					name: '',
 					url: ''
 				}],
-				imgs: [],
+				// imgs: ['http://save-pan.oss-cn-shanghai.aliyuncs.com/img/b4eb4564-04c5-4c73-9b27-1ca300364080.jpg?Expires=1875692760','http://save-pan.oss-cn-shanghai.aliyuncs.com/img/b4eb4564-04c5-4c73-9b27-1ca300364080.jpg?Expires=1875692760'],
+				imgs:[],
 				content: '',
 				id: ''
 				// fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
@@ -91,7 +94,7 @@
 				console.log(res.code);
 				console.log(res.total);
 				this.imageUrl = res.data;
-				this.imgs.push(res.data);
+				this.imgs.push(this.imageUrl);
 
 				// console.log(file);
 				// alert(file);
@@ -106,18 +109,50 @@
 					console.log(this.imgs[i]);
 				}
 			},
+			test2() {
+				var a="abc";
+				for (let i = 0; i < 4; i++) {
+					this.imgs.push(a);
+				}
+			},
+						addTest() {
+				var _this = this;
+				_this.$http({
+					method: 'get',
+					// url: this.apiServer + '/api/exchange/test?imgs='+this.imgs,
+					url: this.apiServer + '/api/exchange/test?imgs='+this.imgs,
+        //                params:{
+						  //  imgs:_this.imgs
+					   // },
+					   transformRequest: [function(data) {
+							// 对 data 进行任意转换处理
+							return _this.qs.stringify(data)
+						}],
+					header: {
+						'content-type': 'application/json'
+					}
+				}).then(function(res) {
+					if (res.data.code == 0) {
+						console.log(_this.imgs.length);
+						console.log(_this.imgs);
+						alert("成功");
+					} else {
+						alert('数据加载失败！');
+					}
+				})
+			},
 			commit() {
 				var _this = this;
 				_this.$http({
 					method: 'post',
-					// url: this.apiServer + '/api/exchange/add?content='+this.content+'&userId='+this.id+'&imgs='+JSON.stringify(this.imgs),
-					url: this.apiServer + '/api/exchange/add',
-                       data:{
-						   content:this.content,
-						   userId:this.id,
-						   imgs:JSON.stringify(this.imgs)
-					   }
-					,
+					url: this.apiServer + '/api/exchange/add?content='+this.content+'&userId='+this.id+'&imgs='+this.imgs,
+					// url: this.apiServer + '/api/exchange/add',
+     //                   data:{
+					// 	   content:this.content,
+					// 	   userId:this.id,
+					// 	   imgs:JSON.stringify(this.imgs)
+					//    }
+					// ,
 					header: {
 						'content-type': 'application/json'
 					}

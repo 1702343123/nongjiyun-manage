@@ -57,6 +57,11 @@ export default new Router({
 			path: '/uploadTest',
 			name: 'upload',
 			component: resolve => require(['../components/UploadTest.vue'], resolve)
+		},
+				{
+			path: '/up',
+			name: 'upload',
+			component: resolve => require(['../components/upload2Test.vue'], resolve)
 		}
 		
 	]
