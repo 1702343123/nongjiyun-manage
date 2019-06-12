@@ -22,7 +22,7 @@
 				<div>
 					<el-button @click="toggleSelection()">取消选择</el-button>
 					<!-- Form -->
-					<el-button type="primary" @click="dialogFormVisible = true">添加用户</el-button>
+					<el-button type="primary" @click="dialogFormVisibleAdd = true">添加用户</el-button>
 				</div>
 				<div style="display: flex;">
 					<label style="display: block;">手机号、昵称、地域搜索</label>
@@ -33,10 +33,29 @@
 				</div>
 			</div>
 
-			<el-dialog title="填写用户信息" :visible.sync="dialogFormVisible">
+			<el-dialog title="填写用户信息" :visible.sync="dialogFormVisibleAdd">
 				<el-form :model="form">
 					<el-form-item label="用户名" :label-width="formLabelWidth">
 						<el-input v-model="form.userName" autocomplete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="头像" :label-width="formLabelWidth">
+						<el-upload
+  class="upload-demo"
+  action="http://localhost:8888/api/img/insetImg"
+  :on-preview="handlePreview"
+  :on-remove="handleRemove"
+  :before-remove="beforeRemove"
+  :on-success="handleSuccess"
+  multiple
+  :limit="3"
+  :on-exceed="handleExceed"
+  :file-list="fileList">
+  <el-button size="small" type="primary">点击上传</el-button>
+  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+</el-upload>
+					</el-form-item>
+					<el-form-item label="头像地址" :label-width="formLabelWidth">
+						<el-input v-model="form.headUrl" autocomplete="off"></el-input>
 					</el-form-item>
 					<el-form-item label="手机号" :label-width="formLabelWidth">
 						<el-input v-model="form.phoneNumber" autocomplete="off"></el-input>
@@ -148,6 +167,7 @@
 				multipleSelection: [],
 				users: [],
 				dialogFormVisible: false,
+				dialogFormVisibleAdd: false,
 				formLabelWidth: '120px',
 				form: {
 					email: '',
@@ -158,7 +178,8 @@
 					userName: '',
 					id: '',
 					identity: '',
-					city: ''
+					city: '',
+					headUrl:''
 				},
 				keyword: '',
 				options: [{
@@ -202,13 +223,39 @@
 							label: '其他'
 						}],
 						city:'',
-						identity:''
+						identity:'',
+						fileList: [{name: '', url: ''}]
 			}
 		},
 		mounted: function() {
 			this.getUsers();
 		},
 		methods: {
+				//文件上传成功的钩子函数
+			handleSuccess(res, file) {
+			    this.$message({
+			        type: 'info',
+			        message: '图片上传成功',
+			        duration: 6000
+			    });
+					var _this=this;
+					_this.form.headUrl=res;
+					alert(_this.form.headUrl);
+					console.log(res);
+
+					},
+					     handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
 			toggleSelection() {
 				this.$refs.multipleTable.clearSelection();
 			},
@@ -273,7 +320,8 @@
 						phoneNumber: this.form.phoneNumber,
 						sex: this.form.sex,
 						userAddress: this.form.userAddress,
-						userName: this.form.userName
+						userName: this.form.userName,
+						icon:this.form.headUrl
 					},
 					header: {
 						'content-type': 'application/json'
@@ -282,8 +330,10 @@
 					if (res.data.code == 0) {
 						console.log(res.data.code);
 						console.log(_this.form.email);
-						_this.dialogFormVisible = false;
+						console.log(_this.form.headUrl);
+						_this.dialogFormVisibleAdd = false;
 						alert(res.data.msg);
+						alert(_this.form.headUrl);
 						_this.getUsers();
 
 					} else {

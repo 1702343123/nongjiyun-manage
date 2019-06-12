@@ -61,7 +61,6 @@
       :total="totalRecord">
     </el-pagination>
   </div>
-		
 	</div>
 
 </template>
